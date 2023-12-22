@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
@@ -136,6 +137,36 @@ vector<int> postorderTraversal(TreeNode* root) {
     return postorderList;
 }
 
+vector<vector<int>> levelOrder(TreeNode* root) {
+    if (root == nullptr) {
+        return {};
+    }
+    vector<vector<int>> levelList;
+    queue<pair<TreeNode*, int>> nodeQueue;
+    nodeQueue.push(make_pair(root, 0));
+
+    while(!nodeQueue.empty()) {
+        pair<TreeNode*, int> currentPair = nodeQueue.front();
+        nodeQueue.pop();
+
+        //cout << currentPair.first->val << ", level: " << currentPair.second << endl;
+        //levelList.push_back(current->val);
+        if (levelList.size() < (currentPair.second + 1)) {
+            levelList.push_back({});
+        }
+        levelList[currentPair.second].push_back(currentPair.first->val);
+
+        if (currentPair.first->left) {
+            nodeQueue.push(make_pair(currentPair.first->left, currentPair.second + 1));
+        }
+        if (currentPair.first->right) {
+            nodeQueue.push(make_pair(currentPair.first->right, currentPair.second + 1));
+        }
+    }
+
+    return levelList;
+}
+
 int main()
 {
     TreeNode* seven = new TreeNode(7, nullptr, nullptr);
@@ -152,9 +183,12 @@ int main()
     TreeNode* one = new TreeNode(1, nullptr, two);
     */
 
-    vector<int> traversal = postorderTraversal(one);
-    //for (auto i: traversal) {
-        //cout << i << " ";
-    //}
+    vector<vector<int>> traversal = levelOrder(one);
+    for (auto level: traversal) {
+        for (auto i: level) {
+            cout << i << " ";
+        }
+        cout << endl;
+    }
     cout << endl;
 }

@@ -30,12 +30,12 @@ public:
         int rootOfX = find(x);
         int rootOfY = find(y);
         if (rootOfX != rootOfY) {
-            if (rank[x] > rank[y]) {
-                root[y] = rootOfX;
-            } else if (rank[x] < rank[y]) {
-                root[x] = rootOfY;
+            if (rank[rootOfX] > rank[rootOfY]) {
+                root[rootOfY] = rootOfX;
+            } else if (rank[rootOfX] < rank[rootOfY]) {
+                root[rootOfX] = rootOfY;
             } else {
-                root[y] = rootOfX;
+                root[rootOfY] = rootOfX;
                 rank[rootOfX] += 1;
             }
         }
